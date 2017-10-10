@@ -19,16 +19,17 @@ void Model::computersTurn(){
     playNextInPattern();
 }
 
+//plays the next color in the pattern. if the end of the pattern has been reached, emits the playersTurn signal.
 void Model::playNextInPattern(){
-    if(currentIndexInPattern == pattern.size()){
+    if(currentIndexInPattern == pattern.size()){ //there is no next color
         emit playersTurn(true);
         currentIndexInPattern = 0;
     }
-    else if(pattern[currentIndexInPattern] == 0){
+    else if(pattern[currentIndexInPattern] == 0){ //next color is red
         emit hitRedButton();
         currentIndexInPattern += 1;
     }
-    else{
+    else{ //next color is blue
         emit hitBlueButton();
         currentIndexInPattern += 1;
     }
