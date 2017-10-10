@@ -15,6 +15,10 @@ public:
     explicit View(Model& model, QWidget *parent = 0);
     ~View();
 
+public slots:
+    void changeRedButtonColor();
+    void changeBlueButtonColor();
+
 private:
     Ui::View *ui;
 };

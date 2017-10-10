@@ -10,13 +10,14 @@ public:
     explicit Model(QObject *parent = nullptr);
 
 signals:
-    void modelUpdated(int);
+    void gameStarted(bool); //emitted from the startGame slot, disables the start button
+    void hitRedButton();
+    void hitBlueButton();
 
 public slots:
-    void updateModel();
+    void startGame();
 
 private:
-    int data;
 };
 
 #endif // MODEL_H
