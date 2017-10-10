@@ -9,6 +9,9 @@ View::View(Model& model, QWidget *parent) :
     ui(new Ui::View)
 {
     ui->setupUi(this);
+
+    waitTime = 500;
+
     //ui->redButton->setStyleSheet( QString("QPushButton {background-color: rgb(200,0,0);} QPushButton:pressed {background-color: rgb(255,0,0);}"));
     //ui->blueButton->setStyleSheet( QString("QPushButton {background-color: rgb(0,0,200);} QPushButton:pressed {background-color: rgb(0,0,255);}"));
 
@@ -33,27 +36,26 @@ View::View(Model& model, QWidget *parent) :
 }
 
 void View::playersTurn(){
-    ui->blueButton->setStyleSheet("background-color: rgb(0,255,0);");
-    ui->redButton->setStyleSheet("background-color: rgb(0,255,0);");
+    ui->blueButton->setStyleSheet("background-color: rgb(0,0,150);");
+    ui->redButton->setStyleSheet("background-color: rgb(150,0,0);");
 }
 
 void View::highlightRedButton(){
     ui->redButton->setStyleSheet("background-color: rgb(255,0,0);");
     //displayTimer.start(20);
-    displayTimer.singleShot(2000, this, &View::unhighlightButtons);
+    displayTimer.singleShot(waitTime, this, &View::unhighlightButtons);
 }
 
 void View::highlightBlueButton(){
     ui->blueButton->setStyleSheet("background-color: rgb(0,0,255);");
     //displayTimer.start(20);
-    displayTimer.singleShot(2000, this, &View::unhighlightButtons);
+    displayTimer.singleShot(waitTime, this, &View::unhighlightButtons);
 }
 
 void View::unhighlightButtons(){
-    ui->blueButton->setStyleSheet("background-color: rgb(0,0,0);");
-    ui->redButton->setStyleSheet("background-color: rgb(0,0,0);");
-    usleep(20000);
-    emit playNextInPattern();
+    ui->blueButton->setStyleSheet("background-color: rgb(0,0,150);");
+    ui->redButton->setStyleSheet("background-color: rgb(150,0,0);");
+    displayTimer.singleShot(waitTime, this, &View::playNextInPattern);
 }
 
 View::~View()

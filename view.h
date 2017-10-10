@@ -29,6 +29,7 @@ signals:
 private:
     Ui::View *ui;
     QTimer displayTimer;
+    int waitTime;
 };
 
 #endif // VIEW_H

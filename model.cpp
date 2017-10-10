@@ -33,11 +33,14 @@ void Model::computersTurn(){
 void Model::playNextInPattern(){
     if(currentIndexInPattern == pattern.size()){
         emit playersTurn(true);
+        currentIndexInPattern = 0;
     }
     else if(pattern[currentIndexInPattern] == 0){
-        hitRedButton();
+        emit hitRedButton();
+        currentIndexInPattern += 1;
     }
     else{
-        hitBlueButton();
+        emit hitBlueButton();
+        currentIndexInPattern += 1;
     }
 }

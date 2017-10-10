@@ -24,7 +24,7 @@ public slots:
 
 private:
     std::vector<int> pattern;
-    int currentIndexInPattern;
+    unsigned int currentIndexInPattern;
 };
 
 #endif // MODEL_H
