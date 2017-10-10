@@ -18,16 +18,6 @@ void Model::computersTurn(){
         pattern.push_back(rand()%2);
     }
     playNextInPattern();
-    //displayTimer.start(20);
-//    for(int num: pattern){
-//        if(num == 0){
-//            hitRedButton();
-//        }
-//        else{
-//            hitBlueButton();
-//        }
-//    }
-    //emit playersTurn(true);
 }
 
 void Model::playNextInPattern(){
@@ -42,5 +32,31 @@ void Model::playNextInPattern(){
     else{
         emit hitBlueButton();
         currentIndexInPattern += 1;
+    }
+}
+
+//called when the user has pressed the blue button, checks that pressing the blue button was the correct move to make.
+//if pressing the blue button was incorrect, emits the endGame signal. if the user has correctly completed the pattern,
+//tells the computer to play the next pattern.
+void Model::pressedBlueButton(){
+    if(pattern[currentIndexInPattern] != 1){
+        emit endGame();
+    }
+    currentIndexInPattern += 1;
+    if(currentIndexInPattern == pattern.size()){
+        computersTurn();
+    }
+}
+
+//called when the user has pressed the red button, checks that pressing the red button was the correct move to make.
+//if pressing the red button was incorrect, emits the endGame signal. if the user has correctly completed the pattern,
+//tells the computer to play the next pattern.
+void Model::pressedRedButton(){
+    if(pattern[currentIndexInPattern] != 0){
+        emit endGame();
+    }
+    currentIndexInPattern += 1;
+    if(currentIndexInPattern == pattern.size()){
+        computersTurn();
     }
 }

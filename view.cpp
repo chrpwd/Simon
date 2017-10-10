@@ -11,9 +11,10 @@ View::View(Model& model, QWidget *parent) :
     ui->setupUi(this);
 
     waitTime = 500;
+    waitTimeForUser = 10;
 
-    //ui->redButton->setStyleSheet( QString("QPushButton {background-color: rgb(200,0,0);} QPushButton:pressed {background-color: rgb(255,0,0);}"));
-    //ui->blueButton->setStyleSheet( QString("QPushButton {background-color: rgb(0,0,200);} QPushButton:pressed {background-color: rgb(0,0,255);}"));
+    ui->redButton->setStyleSheet( QString("QPushButton {background-color: rgb(150,0,0);} QPushButton:pressed {background-color: rgb(255,0,0);}"));
+    ui->blueButton->setStyleSheet( QString("QPushButton {background-color: rgb(0,0,150);} QPushButton:pressed {background-color: rgb(0,0,255);}"));
 
     //connect start button clicked signal to model's startGame slot
     connect(ui->startButton, &QPushButton::clicked, &model, &Model::startGame);
@@ -23,35 +24,65 @@ View::View(Model& model, QWidget *parent) :
     //connect playersTurn signal to setEnabled slot for red and blue buttons
     connect(&model, &Model::playersTurn, ui->blueButton, &QPushButton::setEnabled);
     connect(&model, &Model::playersTurn, ui->redButton, &QPushButton::setEnabled);
-    connect(&model, &Model::playersTurn, this, &View::playersTurn);
+    //connect(&model, &Model::playersTurn, this, &View::playersTurn);
 
     //connect hitRed(Blue)Button signals to changeRed(Blue)ButtonColor slots
     connect(&model, &Model::hitRedButton, this, &View::highlightRedButton);
     connect(&model, &Model::hitBlueButton, this, &View::highlightBlueButton);
 
-    //connects the display timer timeout to the unhighlight buttons method
-    //connect(&displayTimer, &QTimer::timeout, this, &View::unhighlightButtons);
-
+    //connect the view's playNextInPattern signal to the model's playNextInPattern slot
     connect(this, &View::playNextInPattern, &model, &Model::playNextInPattern);
+
+    //connect red and blue buttons to their pressedButton slots
+    connect(ui->blueButton, &QPushButton::pressed, this, &View::pressedBlueButton);
+    connect(ui->blueButton, &QPushButton::pressed, &model, &Model::pressedBlueButton);
+    connect(ui->redButton, &QPushButton::pressed, this, &View::pressedRedButton);
+    connect(ui->redButton, &QPushButton::pressed, &model, &Model::pressedRedButton);
 }
 
-void View::playersTurn(){
+void View::pressedBlueButton(){
+    ui->blueButton->setStyleSheet("background-color: rgb(0,0,255);");
+    displayTimer.singleShot(waitTimeForUser, this, &View::unhighlightBlueButton);
+}
+
+void View::unhighlightBlueButton(){
     ui->blueButton->setStyleSheet("background-color: rgb(0,0,150);");
+}
+
+void View::pressedRedButton(){
+    ui->redButton->setStyleSheet("background-color: rgb(255,0,0);");
+    displayTimer.singleShot(waitTimeForUser, this, &View::unhighlightRedButton);
+}
+
+void View::unhighlightRedButton(){
     ui->redButton->setStyleSheet("background-color: rgb(150,0,0);");
 }
 
+
+//void View::playersTurn(){
+//    ui->blueButton->setStyleSheet("background-color: rgb(0,0,150);");
+//    ui->redButton->setStyleSheet("background-color: rgb(150,0,0);");
+//}
+
+// SLOTS THAT DEAL WITH LETTING THE COMPUTER PLAY OUT THE PATTERN
+
+//used when the computer is playing out the pattern - highlights the blue button and then calls the
+//display timer, which will call the unhighlightButtons method when it's done
 void View::highlightRedButton(){
     ui->redButton->setStyleSheet("background-color: rgb(255,0,0);");
-    //displayTimer.start(20);
     displayTimer.singleShot(waitTime, this, &View::unhighlightButtons);
 }
 
+//used when the computer is playing out the pattern - highlights the blue button and then calls the
+//display timer, which will call the unhighlightButtons method when it's done
 void View::highlightBlueButton(){
     ui->blueButton->setStyleSheet("background-color: rgb(0,0,255);");
-    //displayTimer.start(20);
     displayTimer.singleShot(waitTime, this, &View::unhighlightButtons);
 }
 
+//used when the computer is playing out the pattern - unhighlights the buttons when the displayTimer runs out,
+//and then starts the display timer again (which calls the model to play the next color in the pattern when it
+//runs out)
 void View::unhighlightButtons(){
     ui->blueButton->setStyleSheet("background-color: rgb(0,0,150);");
     ui->redButton->setStyleSheet("background-color: rgb(150,0,0);");
