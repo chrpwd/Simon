@@ -6,17 +6,16 @@ Model::Model(QObject *parent) : QObject(parent)
     currentIndexInPattern = 0;
 }
 
+//starts the game, the computer plays a 1-color pattern
 void Model::startGame() {
     emit gameStarted(false);
     computersTurn();
-    //emit hitRedButton();
-    //emit hitBlueButton();
 }
 
+//the computer adds a color to the end of the pattern and starts playing the pattern
 void Model::computersTurn(){
-    for(int i=0; i<10; i++){
-        pattern.push_back(rand()%2);
-    }
+    currentIndexInPattern = 0;
+    pattern.push_back(rand()%2);
     playNextInPattern();
 }
 
@@ -41,9 +40,11 @@ void Model::playNextInPattern(){
 void Model::pressedBlueButton(){
     if(pattern[currentIndexInPattern] != 1){
         emit endGame();
+        return;
     }
     currentIndexInPattern += 1;
     if(currentIndexInPattern == pattern.size()){
+        currentIndexInPattern = 0;
         computersTurn();
     }
 }
@@ -54,9 +55,11 @@ void Model::pressedBlueButton(){
 void Model::pressedRedButton(){
     if(pattern[currentIndexInPattern] != 0){
         emit endGame();
+        return;
     }
     currentIndexInPattern += 1;
     if(currentIndexInPattern == pattern.size()){
+        currentIndexInPattern = 0;
         computersTurn();
     }
 }

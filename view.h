@@ -23,13 +23,13 @@ public slots:
     void highlightBlueButton(); //changes the color of the blue button when it is used in the pattern
     void unhighlightButtons(); //changes the color of the buttons back to their original colors
 
-    //void playersTurn(); //activates the player's buttons
-
     //used to let the user play the pattern
     void unhighlightBlueButton();
     void pressedBlueButton();
     void unhighlightRedButton();
     void pressedRedButton();
+
+    void endGame();
 
 signals:
     void playNextInPattern(); //tells model that it's time to play the next color in the pattern

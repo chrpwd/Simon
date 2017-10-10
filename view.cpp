@@ -11,7 +11,7 @@ View::View(Model& model, QWidget *parent) :
     ui->setupUi(this);
 
     waitTime = 500;
-    waitTimeForUser = 10;
+    waitTimeForUser = 50;
 
     ui->redButton->setStyleSheet( QString("QPushButton {background-color: rgb(150,0,0);} QPushButton:pressed {background-color: rgb(255,0,0);}"));
     ui->blueButton->setStyleSheet( QString("QPushButton {background-color: rgb(0,0,150);} QPushButton:pressed {background-color: rgb(0,0,255);}"));
@@ -38,31 +38,43 @@ View::View(Model& model, QWidget *parent) :
     connect(ui->blueButton, &QPushButton::pressed, &model, &Model::pressedBlueButton);
     connect(ui->redButton, &QPushButton::pressed, this, &View::pressedRedButton);
     connect(ui->redButton, &QPushButton::pressed, &model, &Model::pressedRedButton);
+
+    connect(&model, &Model::endGame, this, &View::endGame);
 }
 
+//called when the user makes a mistake in repeating the pattern back (only turns one of these black because the button gets
+//unhighlighed after (not a big deal b/c this isn't what we should do anyway just fyi))
+void View::endGame(){
+    ui->blueButton->setStyleSheet("background-color: rgb(0,0,0);");
+    ui->redButton->setStyleSheet("background-color: rgb(0,0,0);");
+}
+
+// SLOTS USED FOR LETTING THE USER PLAY BACK THE PATTERN
+
+//called when the user presses the blue button. highlights the button, and after waiting for waitTimeForUser
+//unhighlights the button.
 void View::pressedBlueButton(){
     ui->blueButton->setStyleSheet("background-color: rgb(0,0,255);");
     displayTimer.singleShot(waitTimeForUser, this, &View::unhighlightBlueButton);
 }
 
+//unhighlights the blue button
 void View::unhighlightBlueButton(){
     ui->blueButton->setStyleSheet("background-color: rgb(0,0,150);");
 }
 
+//called when the user presses the red button. highlights the button, and after waiting for waitTimeForUser
+//unhighlights the button.
 void View::pressedRedButton(){
     ui->redButton->setStyleSheet("background-color: rgb(255,0,0);");
     displayTimer.singleShot(waitTimeForUser, this, &View::unhighlightRedButton);
 }
 
+//unhighlights the red button
 void View::unhighlightRedButton(){
     ui->redButton->setStyleSheet("background-color: rgb(150,0,0);");
 }
 
-
-//void View::playersTurn(){
-//    ui->blueButton->setStyleSheet("background-color: rgb(0,0,150);");
-//    ui->redButton->setStyleSheet("background-color: rgb(150,0,0);");
-//}
 
 // SLOTS THAT DEAL WITH LETTING THE COMPUTER PLAY OUT THE PATTERN
 
