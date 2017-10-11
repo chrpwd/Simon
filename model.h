@@ -11,13 +11,20 @@ class Model : public QObject
 public:
     explicit Model(QObject *parent = nullptr);
 
+    void reset();
+
 signals:
     void gameStarted(bool); //emitted from the startGame slot, disables the start button (boolean param should be false)
-    void playersTurn(bool); //emitted when it is time for the player to hit the buttons (boolean param should be true)
+    void enablePlayerButtons(bool); //true if the player should be able to hit their buttons, false otherwise
     void hitRedButton(); //emitted when the computer "hits" the red button
     void hitBlueButton(); //emitted when the computer "hits" the blue button
 
     void endGame(); //emitted when the user has hit the wrong button and the game ends
+
+    void updateProgress(int); //emitted when the person makes a move and the progress bar needs to be updated
+
+    void makeFaster(); //emitted when the game should speed up
+
 
 public slots:
     void startGame(); //called when the game should start

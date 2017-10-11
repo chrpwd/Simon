@@ -1,6 +1,7 @@
 #include "view.h"
 #include "ui_view.h"
 #include "model.h"
+#include <QMessageBox>
 
 #include <unistd.h>
 
@@ -12,9 +13,11 @@ View::View(Model& model, QWidget *parent) :
 
     waitTime = 500;
     waitTimeForUser = 50;
+    youLoseBox.setHidden(true);
 
-    ui->redButton->setStyleSheet( QString("QPushButton {background-color: rgb(150,0,0);} QPushButton:pressed {background-color: rgb(255,0,0);}"));
-    ui->blueButton->setStyleSheet( QString("QPushButton {background-color: rgb(0,0,150);} QPushButton:pressed {background-color: rgb(0,0,255);}"));
+
+    //ui->redButton->setStyleSheet( QString("QPushButton {background-color: rgb(150,0,0);} QPushButton:pressed {background-color: rgb(255,0,0);}"));
+    //ui->blueButton->setStyleSheet( QString("QPushButton {background-color: rgb(0,0,150);} QPushButton:pressed {background-color: rgb(0,0,255);}"));
 
     //connect start button clicked signal to model's startGame slot
     connect(ui->startButton, &QPushButton::clicked, &model, &Model::startGame);
@@ -22,8 +25,8 @@ View::View(Model& model, QWidget *parent) :
     connect(&model, &Model::gameStarted, ui->startButton, &QPushButton::setEnabled);
 
     //connect playersTurn signal to setEnabled slot for red and blue buttons
-    connect(&model, &Model::playersTurn, ui->blueButton, &QPushButton::setEnabled);
-    connect(&model, &Model::playersTurn, ui->redButton, &QPushButton::setEnabled);
+    connect(&model, &Model::enablePlayerButtons, ui->blueButton, &QPushButton::setEnabled);
+    connect(&model, &Model::enablePlayerButtons, ui->redButton, &QPushButton::setEnabled);
     //connect(&model, &Model::playersTurn, this, &View::playersTurn);
 
     //connect hitRed(Blue)Button signals to changeRed(Blue)ButtonColor slots
@@ -40,13 +43,35 @@ View::View(Model& model, QWidget *parent) :
     connect(ui->redButton, &QPushButton::pressed, &model, &Model::pressedRedButton);
 
     connect(&model, &Model::endGame, this, &View::endGame);
+
+    //connect model to progress bar to update it
+    connect(&model, &Model::updateProgress, ui->progressBar, &QProgressBar::setValue);
+
+    connect(&model, &Model::makeFaster, this, &View::makeFaster);
+
+    connect(this, &View::computersTurnS, &model, &Model::computersTurn);
 }
 
 //called when the user makes a mistake in repeating the pattern back (only turns one of these black because the button gets
 //unhighlighed after (not a big deal b/c this isn't what we should do anyway just fyi))
 void View::endGame(){
-    ui->blueButton->setStyleSheet("background-color: rgb(0,0,0);");
-    ui->redButton->setStyleSheet("background-color: rgb(0,0,0);");
+    waitTime = 500;
+    ui->redButton->setEnabled(false);
+    ui->blueButton->setEnabled(false);
+    ui->startButton->setEnabled(true);
+    ui->startButton->setText("Restart");
+    ui->progressBar->setStyleSheet("background-color: #05B8CC;");
+    youLoseBox.setText("You Lose!!");
+    youLoseBox.setHidden(false);
+}
+
+void View::makeFaster(){
+    displayTimer.singleShot(500, this, &View::computersTurn);
+    waitTime = waitTime/1.15;
+}
+
+void View::computersTurn(){
+    emit computersTurnS();
 }
 
 // SLOTS USED FOR LETTING THE USER PLAY BACK THE PATTERN

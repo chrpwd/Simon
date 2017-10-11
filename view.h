@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QTimer>
 #include "model.h"
+#include<QMessageBox>
 
 namespace Ui {
 class View;
@@ -31,14 +32,21 @@ public slots:
 
     void endGame();
 
+    void makeFaster();
+
+    void computersTurn();
+
 signals:
     void playNextInPattern(); //tells model that it's time to play the next color in the pattern
+
+    void computersTurnS();
 
 private:
     Ui::View *ui;
     QTimer displayTimer;
     int waitTime; //how long the buttons are lit up when the computer plays the pattern
     int waitTimeForUser; //how long the buttons are lit up when the user hits them
+    QMessageBox youLoseBox;
 };
 
 #endif // VIEW_H
