@@ -1,9 +1,11 @@
 #include "model.h"
 #include <cstdlib>
 #include <ctime>
+#include<QSound>
 
 Model::Model(QObject *parent) : QObject(parent)
 {
+    QSound::play(":/Sounds/01.wav");
     srand (time (0));
     currentIndexInPattern = 0;
     for(int i=0; i<2; i++){
@@ -46,6 +48,7 @@ void Model::playNextInPattern(){
 //tells the computer to play the next pattern.
 void Model::pressedBlueButton(){
     if(pattern[currentIndexInPattern] != 1){
+        QSound::play(":/Sounds/11.wav");
         emit endGame();
         reset();
         return;
@@ -64,6 +67,8 @@ void Model::pressedBlueButton(){
 //tells the computer to play the next pattern.
 void Model::pressedRedButton(){
     if(pattern[currentIndexInPattern] != 0){
+        QSound::play(":/Sounds/11.wav");
+
         emit endGame();
         reset();
         return;

@@ -6,7 +6,7 @@
 
 QT       += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets multimedia
 
 TARGET = A5
 TEMPLATE = app
@@ -26,7 +26,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         view.cpp \
-    model.cpp
+        model.cpp
 
 HEADERS += \
         view.h \
@@ -34,3 +34,6 @@ HEADERS += \
 
 FORMS += \
         view.ui
+
+RESOURCES += \
+    resources.qrc

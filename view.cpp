@@ -50,6 +50,7 @@ View::View(Model& model, QWidget *parent) :
     connect(&model, &Model::makeFaster, this, &View::makeFaster);
 
     connect(this, &View::computersTurnS, &model, &Model::computersTurn);
+
 }
 
 //called when the user makes a mistake in repeating the pattern back (only turns one of these black because the button gets
@@ -61,6 +62,7 @@ void View::endGame(){
     ui->startButton->setEnabled(true);
     ui->startButton->setText("Restart");
     ui->progressBar->setStyleSheet("background-color: #05B8CC;");
+    ui->lcdLevel->display(1);
     youLoseBox.setText("You Lose!!");
     youLoseBox.setHidden(false);
 }
@@ -68,6 +70,9 @@ void View::endGame(){
 void View::makeFaster(){
     displayTimer.singleShot(500, this, &View::computersTurn);
     waitTime = waitTime/1.15;
+    int val = ui->lcdLevel->intValue();
+    val++;
+    ui->lcdLevel->display(val);
 }
 
 void View::computersTurn(){
