@@ -27,7 +27,8 @@
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(150,0,0);</string>
+     <string notr="true">background-color: rgb(150,0,0);
+border: 2px black;</string>
     </property>
     <property name="text">
      <string/>
@@ -46,7 +47,8 @@
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(0,0,150);</string>
+     <string notr="true">background-color: rgb(0,0,150);
+border: 2px black;</string>
     </property>
     <property name="text">
      <string/>
@@ -74,11 +76,14 @@
       <x>97</x>
       <y>50</y>
       <width>191</width>
-      <height>23</height>
+      <height>21</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">background: rgb(255,0,0)</string>
+    </property>
     <property name="value">
-     <number>0</number>
+     <number>10</number>
     </property>
    </widget>
    <widget class="QLabel" name="levelLabel">
@@ -159,6 +164,11 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionHow_to_play">
+   <property name="text">
+    <string>How to Play</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

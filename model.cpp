@@ -1,3 +1,16 @@
+/*
+the implementation of the Model class, which has all the logic for the simon game
+
+
+kira parker u1073760
+christian purdy u0728219
+october 2017
+A5: a simon game
+
+github: https://github.com/University-of-Utah-CS3505/simon-mv-app-cs3505-f17-kiraclimber
+*/
+
+
 #include "model.h"
 #include <cstdlib>
 #include <ctime>
@@ -82,6 +95,7 @@ void Model::pressedRedButton(){
     }
 }
 
+//resets the game if someone loses and wants to play again
 void Model::reset(){
     pattern.clear();
     currentIndexInPattern = 0;

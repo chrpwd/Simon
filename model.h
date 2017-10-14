@@ -1,3 +1,14 @@
+/*
+the header file for the Model class, which has all the logic for the simon game
+
+kira parker u1073760
+christian purdy u0728219
+october 2017
+A5: a simon game
+
+github: https://github.com/University-of-Utah-CS3505/simon-mv-app-cs3505-f17-kiraclimber
+*/
+
 #ifndef MODEL_H
 #define MODEL_H
 
@@ -11,7 +22,7 @@ class Model : public QObject
 public:
     explicit Model(QObject *parent = nullptr);
 
-    void reset();
+    void reset(); //resets the game if the user has chosen to restart after losing
 
 signals:
     void gameStarted(bool); //emitted from the startGame slot, disables the start button (boolean param should be false)
@@ -35,8 +46,8 @@ public slots:
     void pressedRedButton(); //called when the user presses the red button
 
 private:
-    std::vector<int> pattern; //red = 0, blue = 1
-    unsigned int currentIndexInPattern;
+    std::vector<int> pattern; //keeps track of the pattern the computer is playing (red = 0, blue = 1)
+    unsigned int currentIndexInPattern; //the current index of the pattern that the computer/user is playing
 };
 
 #endif // MODEL_H
