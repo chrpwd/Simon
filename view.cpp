@@ -24,6 +24,7 @@ View::View(Model& model, QWidget *parent) :
     ui->setupUi(this);
 
     ui->progressBar->setVisible(false);
+    ui->progressBar->setTextVisible(false);
 
     waitTime = 500; //how long each button is lit up when the computer plays the pattern
     waitTimeForUser = 50; //how long each button is lit up when the user plays the pattern
@@ -67,11 +68,9 @@ View::View(Model& model, QWidget *parent) :
 //called when the user presses the start/restart button, displays the progress bar and sets the color
 void View::startGame(){
     QRect r = ui->progressBar->geometry();
-    QString st = QString (
-                "QProgressBar::chunk {"
+    QString st = QString ("QProgressBar::chunk {"
                 "background-color: #00ff00;"
                  "}");
-
     st.append("QProgressBar {"
               "border: 1px solid grey;"
               "border-radius: 2px;"
@@ -90,11 +89,9 @@ void View::endGame(){
     ui->startButton->setEnabled(true);
     ui->startButton->setText("Restart");
     QRect r = ui->progressBar->geometry();
-    QString st = QString (
-                "QProgressBar::chunk {"
+    QString st = QString ("QProgressBar::chunk {"
                 "background-color: #ff0000;"
                  "}");
-
     st.append("QProgressBar {"
               "border: 1px solid grey;"
               "border-radius: 2px;"
